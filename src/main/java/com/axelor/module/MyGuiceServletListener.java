@@ -15,4 +15,5 @@ public class MyGuiceServletListener extends GuiceResteasyBootstrapServletContext
 	protected List<? extends Module> getModules(ServletContext context) {
 		return Arrays.asList(new AxelorModule());
 	}
+	
 }
