@@ -11,6 +11,12 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.plugins.providers.html.View;
 
 import com.axelor.db.Student;
+import com.axelor.db.studentService;
+import com.axelor.module.AxelorModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.persist.PersistService;
+import com.google.inject.persist.jpa.JpaPersistModule;
 
 @Path("/student")
 public class StudentResource {
@@ -35,10 +41,15 @@ public class StudentResource {
 	        @FormParam("fname") String fname,  
 	        @FormParam("lname") String lname) {  
 	 		
-	 		Student st = new Student(fname, lname);
-	 		
+	 		Injector ij = Guice.createInjector(new AxelorModule(),new JpaPersistModule("myJpaUnit"));
+	 		PersistService ps =  ij.getInstance(PersistService.class);
+			ps.start();
+			studentService ss = ij.getInstance(studentService.class);
+			ss.addStudent(fname, lname);
+			
+	 		//Student st = new Student(fname, lname);
 	        return Response.status(200)  
-	            .entity(st)  
+	            .entity("Added Successfully...")  
 	            .build();  
 	    }  
 	
